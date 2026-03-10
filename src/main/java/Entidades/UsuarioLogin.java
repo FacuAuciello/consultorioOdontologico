@@ -1,13 +1,14 @@
 
 package Entidades;
 
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class UsuarioLogin {
+public class UsuarioLogin implements Serializable {
     
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
