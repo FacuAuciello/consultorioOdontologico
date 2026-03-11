@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @WebServlet(name = "inicioServlet", urlPatterns = {"/inicioServlet"})
 public class inicioServlet extends HttpServlet {
@@ -46,6 +47,16 @@ public class inicioServlet extends HttpServlet {
         String contrasenia = request.getParameter("contrasenia");
         
         logica.ControladoraLogica cLogica = new logica.ControladoraLogica();
+        
+        if(cLogica.verificarLogin(usuario, contrasenia)){
+            //la sesion se crea solo cuando el usuario es correcto y guardo el usuario autenticado
+            HttpSession sesionUsuario = request.getSession();
+            sesionUsuario.setAttribute("usuario", usuario );
+            response.sendRedirect("index.jsp");
+        }else{
+            //redirijo el error a una pagina
+            response.sendRedirect("errorLogin.jsp");
+        }
     }
 
     @Override
