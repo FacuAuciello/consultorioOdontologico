@@ -40,7 +40,12 @@ public class inicioServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        //lectura de los valores que envio el usuario a traves del formulario
+        String usuario = request.getParameter("usuario");
+        String contrasenia = request.getParameter("contrasenia");
+        
+        logica.ControladoraLogica cLogica = new logica.ControladoraLogica();
     }
 
     @Override
