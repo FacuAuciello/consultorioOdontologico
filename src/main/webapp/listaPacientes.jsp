@@ -1,4 +1,3 @@
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -7,7 +6,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Bienvenido</h1>
-        <a href="altaPaciente.jsp">Crear paciente</a>
+        <h1>Lista Pacientes</h1>
     </body>
 </html>

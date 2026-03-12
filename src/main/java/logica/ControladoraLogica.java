@@ -1,6 +1,7 @@
 
 package logica;
 
+import Entidades.Paciente;
 import Entidades.UsuarioLogin;
 import java.util.List;
 import persistencia.ControladoraPersistencia;
@@ -21,6 +22,12 @@ public class ControladoraLogica {
                return true;
         }
         return false;
+    }
+
+    public void guardarPaciente(Paciente paciente) {
+        
+        controlPersis.getPacienteJPA().create(paciente);
+        
     }
 }
 

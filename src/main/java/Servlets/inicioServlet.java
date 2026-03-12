@@ -52,6 +52,7 @@ public class inicioServlet extends HttpServlet {
             //la sesion se crea solo cuando el usuario es correcto y guardo el usuario autenticado
             HttpSession sesionUsuario = request.getSession();
             sesionUsuario.setAttribute("usuario", usuario );
+            //redirijo a menu principal
             response.sendRedirect("index.jsp");
         }else{
             //redirijo el error a una pagina
