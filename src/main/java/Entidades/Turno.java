@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,6 +23,7 @@ public class Turno implements Serializable {
     private Date fechaHora;
     private String duracionTurno;
     private String monto;
+    @Lob
     private String notasOdontologicas;
     @ManyToOne
     private Paciente paciente;
