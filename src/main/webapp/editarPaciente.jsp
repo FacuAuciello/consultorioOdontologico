@@ -50,8 +50,22 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Fecha de Nacimiento</label>
-                        <input type="date" class="form-control" name="fechaNacimiento"
-                               value="<%= p.getFechaNacimiento() != null ? new java.text.SimpleDateFormat("yyyy-MM-dd").format(p.getFechaNacimiento()) : "" %>">
+                        <input type="hidden" name="fechaNacimiento" id="fechaNacimiento">
+                        <%
+                            String fnDia = "", fnMes = "", fnAnio = "";
+                            if (p.getFechaNacimiento() != null) {
+                                java.util.Calendar cal = java.util.Calendar.getInstance();
+                                cal.setTime(p.getFechaNacimiento());
+                                fnDia  = String.valueOf(cal.get(java.util.Calendar.DAY_OF_MONTH));
+                                fnMes  = String.valueOf(cal.get(java.util.Calendar.MONTH) + 1);
+                                fnAnio = String.valueOf(cal.get(java.util.Calendar.YEAR));
+                            }
+                        %>
+                        <div class="d-flex">
+                            <input type="number" id="fnDia" class="form-control text-center mr-1" placeholder="DD" min="1" max="31" style="width:70px" value="<%=fnDia%>">
+                            <input type="number" id="fnMes" class="form-control text-center mr-1" placeholder="MM" min="1" max="12" style="width:70px" value="<%=fnMes%>">
+                            <input type="number" id="fnAnio" class="form-control text-center" placeholder="AAAA" min="1900" max="2100" style="width:90px" value="<%=fnAnio%>">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -62,3 +76,21 @@
 </div>
 
 <%@include file="componentes/footer.jsp"%>
+
+<script>
+    document.getElementById('fnDia').addEventListener('input', function() {
+        if (this.value.length === 2) document.getElementById('fnMes').focus();
+    });
+    document.getElementById('fnMes').addEventListener('input', function() {
+        if (this.value.length === 2) document.getElementById('fnAnio').focus();
+    });
+
+    document.querySelector('form').addEventListener('submit', function() {
+        var dia = document.getElementById('fnDia').value.padStart(2, '0');
+        var mes = document.getElementById('fnMes').value.padStart(2, '0');
+        var anio = document.getElementById('fnAnio').value;
+        if (dia && mes && anio) {
+            document.getElementById('fechaNacimiento').value = anio + '-' + mes + '-' + dia;
+        }
+    });
+</script>
