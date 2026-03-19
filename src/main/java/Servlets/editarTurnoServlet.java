@@ -69,6 +69,20 @@ public class editarTurnoServlet extends HttpServlet {
     } catch (Exception ex) {
         Logger.getLogger(editarTurnoServlet.class.getName()).log(Level.SEVERE, null, ex);
     }
+
+    // Agregar entrada a la historia clínica del paciente
+    if ((notas != null && !notas.trim().isEmpty()) || (monto != null && !monto.trim().isEmpty())) {
+        java.text.SimpleDateFormat sdfFecha = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm");
+        String entrada = "\n--- " + sdfFecha.format(turno.getFechaHora()) + " | Monto: $" + (monto != null ? monto : "-") + " ---\n" + (notas != null ? notas : "") + "\n";
+        String historiaActual = paciente.getHistoriaClinica();
+        paciente.setHistoriaClinica((historiaActual != null ? historiaActual : "") + entrada);
+        try {
+            cLogica.editarPaciente(paciente);
+        } catch (Exception ex) {
+            Logger.getLogger(editarTurnoServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     response.sendRedirect("inicioServlet");
 }
 
