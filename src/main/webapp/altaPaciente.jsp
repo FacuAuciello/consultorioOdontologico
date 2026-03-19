@@ -44,7 +44,12 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Fecha de Nacimiento</label>
-                        <input type="date" class="form-control" name="fechaNacimiento">
+                        <input type="hidden" name="fechaNacimiento" id="fechaNacimiento">
+                        <div class="d-flex">
+                            <input type="number" id="fnDia" class="form-control text-center mr-1" placeholder="DD" min="1" max="31" maxlength="2" style="width:70px">
+                            <input type="number" id="fnMes" class="form-control text-center mr-1" placeholder="MM" min="1" max="12" maxlength="2" style="width:70px">
+                            <input type="number" id="fnAnio" class="form-control text-center" placeholder="AAAA" min="1900" max="2100" maxlength="4" style="width:90px">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -54,4 +59,24 @@
     </div>
 </div>
 
-<%@include file="componentes/footer.jsp"%>p"%>
+<%@include file="componentes/footer.jsp"%>
+
+<script>
+    // Auto-avanza el foco al siguiente campo
+    document.getElementById('fnDia').addEventListener('input', function() {
+        if (this.value.length === 2) document.getElementById('fnMes').focus();
+    });
+    document.getElementById('fnMes').addEventListener('input', function() {
+        if (this.value.length === 2) document.getElementById('fnAnio').focus();
+    });
+
+    // Ensambla el campo oculto yyyy-MM-dd antes de enviar
+    document.querySelector('form').addEventListener('submit', function() {
+        var dia = document.getElementById('fnDia').value.padStart(2, '0');
+        var mes = document.getElementById('fnMes').value.padStart(2, '0');
+        var anio = document.getElementById('fnAnio').value;
+        if (dia && mes && anio) {
+            document.getElementById('fechaNacimiento').value = anio + '-' + mes + '-' + dia;
+        }
+    });
+</script>
