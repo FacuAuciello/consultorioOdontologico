@@ -67,7 +67,7 @@ public class altaPacienteServlet extends HttpServlet {
      logica.ControladoraLogica cLogica = new logica.ControladoraLogica();
      cLogica.guardarPaciente(paciente);
      //creacion exitosa del usuario, redirije a la pagina donde estan todos los usuarios
-     response.sendRedirect("listaPacientes.jsp");
+     response.sendRedirect("listaPacientesServlet");
      
     }
 

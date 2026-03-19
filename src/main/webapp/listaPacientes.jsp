@@ -37,6 +37,9 @@
                             <fmt:formatDate value="${p.fechaNacimiento}" pattern="dd/MM/yyyy"/>
                             </td>
                             <td>
+                                <a href="perfilPacienteServlet?id=${p.id}" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-notes-medical"></i> Historia
+                                </a>
                                 <a href="editarPacienteServlet?id=${p.id}" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i> Editar
                                 </a>

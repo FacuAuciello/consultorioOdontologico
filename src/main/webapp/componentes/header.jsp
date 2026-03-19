@@ -13,15 +13,15 @@
     <div id="wrapper">
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.jsp">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
                 <div class="sidebar-brand-icon">
                     <i class="fas fa-tooth"></i>
                 </div>
                 <div class="sidebar-brand-text mx-3">Consultorio<br><small>Hernán Crespo</small></div>
             </a>
             <hr class="sidebar-divider my-0">
-            <li class="nav-item active">
-                <a class="nav-link" href="listaTurnosServlet">
+            <li class="nav-item">
+                <a class="nav-link" href="inicioServlet">
                     <i class="fas fa-calendar-alt"></i>
                     <span>Agenda</span>
                 </a>

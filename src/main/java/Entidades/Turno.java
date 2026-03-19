@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 @Entity
 public class Turno implements Serializable {
@@ -85,6 +86,17 @@ public class Turno implements Serializable {
     public void setPaciente(Paciente paciente) {
         this.paciente = paciente;
     }
+
+    @Transient
+private Date fechaFin;
+
+public Date getFechaFin() {
+    return fechaFin;
+}
+
+public void setFechaFin(Date fechaFin) {
+    this.fechaFin = fechaFin;
+}
     
     
     

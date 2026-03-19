@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -23,6 +24,8 @@ public class Paciente implements Serializable {
     private String direccion;
     @Temporal(TemporalType.DATE)
     private Date fechaNacimiento;
+    @Lob
+    private String historiaClinica;
 
     public Paciente() {
     }
@@ -91,6 +94,14 @@ public class Paciente implements Serializable {
     public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
-    
-    
+
+    public String getHistoriaClinica() {
+        return historiaClinica;
+    }
+
+    public void setHistoriaClinica(String historiaClinica) {
+        this.historiaClinica = historiaClinica;
+    }
+
+
 }

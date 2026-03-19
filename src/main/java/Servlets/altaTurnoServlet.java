@@ -38,11 +38,22 @@ public class altaTurnoServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
     logica.ControladoraLogica cLogica = new logica.ControladoraLogica();
     List<Paciente> pacientes = cLogica.traerPacientes();
     request.setAttribute("pacientes", pacientes);
+    
+    // Lee la fecha que viene del calendario
+    String fechaHora = request.getParameter("fechaHora");
+    if (fechaHora != null && !fechaHora.isEmpty()) {
+        // Convierte formato "2026-03-16T09:00:00" a "2026-03-16T09:00"
+        if (fechaHora.length() > 16) {
+            fechaHora = fechaHora.substring(0, 16);
+        }
+        request.setAttribute("fechaHora", fechaHora);
+    }
+    
     request.getRequestDispatcher("altaTurno.jsp").forward(request, response);
 }
 
@@ -66,7 +77,7 @@ public class altaTurnoServlet extends HttpServlet {
     
     Turno turno = new Turno(fechaHora, duracion, monto, notas, paciente);
     cLogica.guardarTurno(turno);
-    response.sendRedirect("listaTurnosServlet");
+    response.sendRedirect("inicioServlet");
 }
 
     @Override

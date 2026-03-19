@@ -34,7 +34,8 @@ public class listaPacientesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+
         logica.ControladoraLogica CLogica = new logica.ControladoraLogica();
         
         //llamar a traer pacientes, guardar lal ista y mandarla al JSP de lista pacientes

@@ -69,7 +69,7 @@ public class editarTurnoServlet extends HttpServlet {
     } catch (Exception ex) {
         Logger.getLogger(editarTurnoServlet.class.getName()).log(Level.SEVERE, null, ex);
     }
-    response.sendRedirect("listaTurnosServlet");
+    response.sendRedirect("inicioServlet");
 }
 
     @Override

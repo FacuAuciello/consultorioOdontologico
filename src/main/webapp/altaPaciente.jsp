@@ -1,21 +1,57 @@
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
+<%@include file="componentes/header.jsp"%>
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Nuevo Paciente</h1>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-body">
         <form action="altaPacienteServlet" method="POST">
-            <label form="nombre"> Nombre: <input type="text" id="nombre" name="nombre"></label>
-            <label form="apellido"> Apellido: <input type="text" id="apellido" name="apellido"></label>
-            <label>DNI: <input type="text" id="dni" name="dni"></label>
-            <label>Telefono: <input type="text" id="numeroContacto" name="numeroContacto"></label>
-            <label>Direccion: <input type="text" id="direccion" name="direccion"></label>
-            <label>Fecha de nacimiento: <input type="date" id="fechaNacimiento" name="fechaNacimiento"></label>
-            <button type="submit"> Crear Paciente </button>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <input type="text" class="form-control" name="nombre" required>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Apellido</label>
+                        <input type="text" class="form-control" name="apellido" required>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>DNI</label>
+                        <input type="text" class="form-control" name="dni" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Teléfono</label>
+                        <input type="text" class="form-control" name="numeroContacto">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Dirección</label>
+                        <input type="text" class="form-control" name="direccion">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Fecha de Nacimiento</label>
+                        <input type="date" class="form-control" name="fechaNacimiento">
+                    </div>
+                </div>
+            </div>
+            <a href="listaPacientesServlet" class="btn btn-secondary">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Guardar Paciente</button>
         </form>
-    </body>
-</html>
+    </div>
+</div>
+
+<%@include file="componentes/footer.jsp"%>p"%>
