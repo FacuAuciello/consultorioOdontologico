@@ -13,7 +13,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Fecha y Hora</label>
-                        <input type="datetime-local" class="form-control" name="fechaHora" value="${fechaHora}" required>
+                        <input type="text" class="form-control" name="fechaHora" value="${fechaHora}" readonly required>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -51,8 +51,7 @@
     $(document).ready(function() {
         $('.select2').select2({
             theme: 'bootstrap4',
-            placeholder: 'Buscar paciente...',
-            allowClear: true
+            placeholder: 'Buscar paciente...'
         });
     });
 </script>

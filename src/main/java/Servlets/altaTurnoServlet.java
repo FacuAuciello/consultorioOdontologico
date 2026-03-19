@@ -70,8 +70,13 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
     String duracion = request.getParameter("duracionTurno");
     String monto = request.getParameter("monto");
     String notas = request.getParameter("notasOdontologicas");
-    int idPaciente = Integer.parseInt(request.getParameter("idPaciente"));
-    
+    String idPacienteParam = request.getParameter("idPaciente");
+    if (idPacienteParam == null || idPacienteParam.isEmpty()) {
+        response.sendRedirect("altaTurnoServlet");
+        return;
+    }
+    int idPaciente = Integer.parseInt(idPacienteParam);
+
     logica.ControladoraLogica cLogica = new logica.ControladoraLogica();
     Paciente paciente = cLogica.buscarPaciente(idPaciente);
     
