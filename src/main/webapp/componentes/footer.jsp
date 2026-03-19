@@ -3,7 +3,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Consultorio Odontológico &copy; 2026</span>
+                        <span>Facundo Auciello &copy; 2026</span>
                     </div>
                 </div>
             </footer>
