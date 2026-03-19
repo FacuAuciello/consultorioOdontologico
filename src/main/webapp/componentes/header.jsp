@@ -35,12 +35,6 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="altaTurnoServlet">
-                    <i class="fas fa-plus-circle"></i>
-                    <span>Nuevo Turno</span>
-                </a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="altaPaciente.jsp">
                     <i class="fas fa-user-plus"></i>
                     <span>Nuevo Paciente</span>
