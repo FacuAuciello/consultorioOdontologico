@@ -28,11 +28,22 @@ public class SesionFiltro implements Filter {
         // Recursos que no requieren sesión
         boolean esRecursoPublico = uri.equals(contextPath + "/login.jsp")
                 || uri.equals(contextPath + "/errorLogin.jsp")
-                || uri.equals(contextPath + "/inicioServlet") && "POST".equals(req.getMethod())
+                || (uri.equals(contextPath + "/inicioServlet") && "POST".equals(req.getMethod()))
                 || uri.startsWith(contextPath + "/vendor/")
                 || uri.startsWith(contextPath + "/css/")
                 || uri.startsWith(contextPath + "/js/")
                 || uri.startsWith(contextPath + "/img/");
+
+        // Redirigir el root al servlet principal
+        if (uri.equals(contextPath + "/") || uri.equals(contextPath)) {
+            HttpSession session = req.getSession(false);
+            if (session != null && session.getAttribute("usuario") != null) {
+                res.sendRedirect(contextPath + "/inicioServlet");
+            } else {
+                res.sendRedirect(contextPath + "/login.jsp");
+            }
+            return;
+        }
 
         if (esRecursoPublico) {
             chain.doFilter(request, response);

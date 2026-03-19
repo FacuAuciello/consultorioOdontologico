@@ -50,7 +50,8 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Fecha de Nacimiento</label>
-                        <input type="date" class="form-control" name="fechaNacimiento">
+                        <input type="date" class="form-control" name="fechaNacimiento"
+                               value="<%= p.getFechaNacimiento() != null ? new java.text.SimpleDateFormat("yyyy-MM-dd").format(p.getFechaNacimiento()) : "" %>">
                     </div>
                 </div>
             </div>
