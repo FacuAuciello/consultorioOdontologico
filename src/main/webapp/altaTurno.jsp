@@ -6,6 +6,13 @@
     <h1 class="h3 mb-0 text-gray-800">Nuevo Turno</h1>
 </div>
 
+<c:if test="${not empty error}">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-triangle"></i> ${error}
+        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+    </div>
+</c:if>
+
 <div class="card shadow mb-4">
     <div class="card-body">
         <form action="altaTurnoServlet" method="POST">

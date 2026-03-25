@@ -3,6 +3,19 @@
 <%@include file="componentes/header.jsp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
+<c:if test="${not empty flash}">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle"></i> <c:out value="${flash}" escapeXml="false"/>
+        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+    </div>
+</c:if>
+<c:if test="${not empty flashError}">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-triangle"></i> <c:out value="${flashError}" escapeXml="false"/>
+        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+    </div>
+</c:if>
+
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Pacientes</h1>
     <a href="altaPaciente.jsp" class="btn btn-primary btn-sm shadow-sm">

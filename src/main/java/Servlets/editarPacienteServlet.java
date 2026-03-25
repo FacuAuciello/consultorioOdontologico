@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -47,39 +49,144 @@ public class editarPacienteServlet extends HttpServlet {
     }
 
     @Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    int id = Integer.parseInt(request.getParameter("id"));
-    String nombre = request.getParameter("nombre");
-    String apellido = request.getParameter("apellido");
-    String dni = request.getParameter("dni");
-    String numeroContacto = request.getParameter("numeroContacto");
-    String direccion = request.getParameter("direccion");
-    
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    Date fechaNacimiento = null;
-    try {
-        fechaNacimiento = sdf.parse(request.getParameter("fechaNacimiento"));
-    } catch (ParseException ex) {
-        Logger.getLogger(editarPacienteServlet.class.getName()).log(Level.SEVERE, null, ex);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        int id = Integer.parseInt(request.getParameter("id"));
+        String nombre         = request.getParameter("nombre");
+        String apellido       = request.getParameter("apellido");
+        String dni            = request.getParameter("dni");
+        String numeroContacto = request.getParameter("numeroContacto");
+        String direccion      = request.getParameter("direccion");
+        String fnDia          = request.getParameter("fnDia");
+        String fnMes          = request.getParameter("fnMes");
+        String fnAnio         = request.getParameter("fnAnio");
+
+        logica.ControladoraLogica cLogica = new logica.ControladoraLogica();
+
+        String error = validar(nombre, apellido, dni, numeroContacto, direccion, fnDia, fnMes, fnAnio);
+        if (error != null) {
+            // Armar el paciente con los valores enviados para repoblar el formulario
+            Paciente paciente = cLogica.buscarPaciente(id);
+            paciente.setNombre(nombre);
+            paciente.setApellido(apellido);
+            paciente.setDni(dni);
+            paciente.setNumeroContacto(numeroContacto);
+            paciente.setDireccion(direccion);
+            request.setAttribute("paciente", paciente);
+            request.setAttribute("error", error);
+            request.getRequestDispatcher("editarPaciente.jsp").forward(request, response);
+            return;
+        }
+
+        Date fechaNacimiento = parsearFecha(fnDia, fnMes, fnAnio);
+        Paciente paciente = cLogica.buscarPaciente(id);
+        paciente.setNombre(nombre.trim());
+        paciente.setApellido(apellido.trim());
+        paciente.setDni(dni.trim());
+        paciente.setNumeroContacto(numeroContacto.trim());
+        paciente.setDireccion(direccion.trim());
+        paciente.setFechaNacimiento(fechaNacimiento);
+
+        try {
+            cLogica.editarPaciente(paciente);
+            request.getSession().setAttribute("flash",
+                    "Paciente <strong>" + apellido.trim() + ", " + nombre.trim() + "</strong> actualizado correctamente.");
+        } catch (Exception ex) {
+            Logger.getLogger(editarPacienteServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.getSession().setAttribute("flashError", "Ocurrió un error al guardar los cambios. Intente nuevamente.");
+        }
+        response.sendRedirect("listaPacientesServlet");
     }
-    
-    logica.ControladoraLogica cLogica = new logica.ControladoraLogica();
-    Paciente paciente = cLogica.buscarPaciente(id);
-    paciente.setNombre(nombre);
-    paciente.setApellido(apellido);
-    paciente.setDni(dni);
-    paciente.setNumeroContacto(numeroContacto);
-    paciente.setDireccion(direccion);
-    paciente.setFechaNacimiento(fechaNacimiento);
-    
-    try {
-        cLogica.editarPaciente(paciente);
-    } catch (Exception ex) {
-        Logger.getLogger(editarPacienteServlet.class.getName()).log(Level.SEVERE, null, ex);
+
+    private String validar(String nombre, String apellido, String dni,
+            String numeroContacto, String direccion,
+            String fnDia, String fnMes, String fnAnio) {
+
+        List<String> errores = new ArrayList<>();
+
+        // Nombre
+        if (nombre == null || nombre.trim().isEmpty()) {
+            errores.add("El nombre es obligatorio.");
+        } else if (!nombre.trim().matches("[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ ]+")) {
+            errores.add("El nombre solo puede contener letras y espacios.");
+        }
+
+        // Apellido
+        if (apellido == null || apellido.trim().isEmpty()) {
+            errores.add("El apellido es obligatorio.");
+        } else if (!apellido.trim().matches("[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ ]+")) {
+            errores.add("El apellido solo puede contener letras y espacios.");
+        }
+
+        // DNI
+        if (dni == null || dni.trim().isEmpty()) {
+            errores.add("El DNI es obligatorio.");
+        }
+
+        // Teléfono
+        if (numeroContacto == null || numeroContacto.trim().isEmpty()) {
+            errores.add("El teléfono es obligatorio.");
+        }
+
+        // Dirección
+        if (direccion == null || direccion.trim().isEmpty()) {
+            errores.add("La dirección es obligatoria.");
+        }
+
+        // Fecha de nacimiento
+        if (fnDia == null || fnDia.trim().isEmpty()
+                || fnMes == null || fnMes.trim().isEmpty()
+                || fnAnio == null || fnAnio.trim().isEmpty()) {
+            errores.add("La fecha de nacimiento es obligatoria (día, mes y año).");
+        } else {
+            try {
+                int dia  = Integer.parseInt(fnDia.trim());
+                int mes  = Integer.parseInt(fnMes.trim());
+                int anio = Integer.parseInt(fnAnio.trim());
+                int anioActual = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
+
+                if (dia < 1 || dia > 31) {
+                    errores.add("El día de nacimiento debe estar entre 1 y 31.");
+                } else if (mes < 1 || mes > 12) {
+                    errores.add("El mes de nacimiento debe estar entre 1 y 12.");
+                } else if (anio < 1900 || anio > anioActual) {
+                    errores.add("El año de nacimiento debe estar entre 1900 y " + anioActual + ".");
+                } else {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    sdf.setLenient(false);
+                    try {
+                        sdf.parse(String.format("%04d-%02d-%02d", anio, mes, dia));
+                    } catch (ParseException ex) {
+                        errores.add("La fecha de nacimiento no es válida (revisá el día y mes).");
+                    }
+                }
+            } catch (NumberFormatException ex) {
+                errores.add("La fecha de nacimiento debe contener solo números.");
+            }
+        }
+
+        if (errores.isEmpty()) return null;
+        if (errores.size() == 1) return errores.get(0);
+
+        StringBuilder sb = new StringBuilder("<ul class='mb-0 mt-1'>");
+        for (String e : errores) sb.append("<li>").append(e).append("</li>");
+        sb.append("</ul>");
+        return sb.toString();
     }
-    response.sendRedirect("listaPacientesServlet");
-}
+
+    private Date parsearFecha(String fnDia, String fnMes, String fnAnio) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            sdf.setLenient(false);
+            return sdf.parse(String.format("%04d-%02d-%02d",
+                    Integer.parseInt(fnAnio.trim()),
+                    Integer.parseInt(fnMes.trim()),
+                    Integer.parseInt(fnDia.trim())));
+        } catch (Exception ex) {
+            return null;
+        }
+    }
 
     @Override
     public String getServletInfo() {

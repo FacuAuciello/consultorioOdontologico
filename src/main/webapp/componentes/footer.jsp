@@ -14,5 +14,10 @@
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="js/sb-admin-2.min.js"></script>
+    <script>
+        setTimeout(function() {
+            $('.alert-dismissible').fadeOut(400, function() { $(this).alert('close'); });
+        }, 3000);
+    </script>
 </body>
 </html>

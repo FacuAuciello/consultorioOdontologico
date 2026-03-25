@@ -5,50 +5,60 @@
     <h1 class="h3 mb-0 text-gray-800">Nuevo Paciente</h1>
 </div>
 
+<% String errorAlta = (String) request.getAttribute("error"); %>
+<% if (errorAlta != null) { %>
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <i class="fas fa-exclamation-triangle"></i> <%= errorAlta %>
+    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+</div>
+<% } %>
+
 <div class="card shadow mb-4">
     <div class="card-body">
         <form action="altaPacienteServlet" method="POST">
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Nombre</label>
-                        <input type="text" class="form-control" name="nombre" required>
+                        <label>Nombre <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="nombre" value="${param.nombre}"
+                               pattern="[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ ]+" title="Solo letras y espacios" required>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Apellido</label>
-                        <input type="text" class="form-control" name="apellido" required>
+                        <label>Apellido <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="apellido" value="${param.apellido}"
+                               pattern="[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ ]+" title="Solo letras y espacios" required>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>DNI</label>
-                        <input type="text" class="form-control" name="dni" required>
+                        <label>DNI <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="dni" value="${param.dni}" required>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Teléfono</label>
-                        <input type="text" class="form-control" name="numeroContacto">
+                        <label>Teléfono <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="numeroContacto" value="${param.numeroContacto}" required>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Dirección</label>
-                        <input type="text" class="form-control" name="direccion">
+                        <label>Dirección <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="direccion" value="${param.direccion}" required>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Fecha de Nacimiento</label>
+                        <label>Fecha de Nacimiento <span class="text-danger">*</span></label>
                         <input type="hidden" name="fechaNacimiento" id="fechaNacimiento">
                         <div class="d-flex">
-                            <input type="number" id="fnDia" class="form-control text-center mr-1" placeholder="DD" min="1" max="31" maxlength="2" style="width:70px">
-                            <input type="number" id="fnMes" class="form-control text-center mr-1" placeholder="MM" min="1" max="12" maxlength="2" style="width:70px">
-                            <input type="number" id="fnAnio" class="form-control text-center" placeholder="AAAA" min="1900" max="2100" maxlength="4" style="width:90px">
+                            <input type="number" id="fnDia" name="fnDia" class="form-control text-center mr-1" placeholder="DD" min="1" max="31" style="width:70px" value="${param.fnDia}">
+                            <input type="number" id="fnMes" name="fnMes" class="form-control text-center mr-1" placeholder="MM" min="1" max="12" style="width:70px" value="${param.fnMes}">
+                            <input type="number" id="fnAnio" name="fnAnio" class="form-control text-center" placeholder="AAAA" min="1900" max="2100" style="width:90px" value="${param.fnAnio}">
                         </div>
                     </div>
                 </div>

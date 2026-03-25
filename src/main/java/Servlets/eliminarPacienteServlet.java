@@ -39,12 +39,16 @@ public class eliminarPacienteServlet extends HttpServlet {
         
         int id = Integer.parseInt(request.getParameter("id"));
         logica.ControladoraLogica cLogica = new logica.ControladoraLogica();
-            try {
-                cLogica.eliminarPaciente(id);
-            } catch (Exception ex) {
+        try {
+            Entidades.Paciente p = cLogica.buscarPaciente(id);
+            String nombre = p.getApellido() + ", " + p.getNombre();
+            cLogica.eliminarPaciente(id);
+            request.getSession().setAttribute("flash", "Paciente <strong>" + nombre + "</strong> eliminado correctamente.");
+        } catch (Exception ex) {
             Logger.getLogger(eliminarPacienteServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            response.sendRedirect("listaPacientesServlet");
+            request.getSession().setAttribute("flashError", "Ocurrió un error al eliminar el paciente.");
+        }
+        response.sendRedirect("listaPacientesServlet");
         
     }
 

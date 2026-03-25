@@ -7,6 +7,19 @@
     <h1 class="h3 mb-0 text-gray-800">Agenda</h1>
 </div>
 
+<c:if test="${not empty flash}">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle"></i> <c:out value="${flash}" escapeXml="false"/>
+        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+    </div>
+</c:if>
+<c:if test="${not empty flashError}">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-triangle"></i> <c:out value="${flashError}" escapeXml="false"/>
+        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+    </div>
+</c:if>
+
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">Semana actual</h6>

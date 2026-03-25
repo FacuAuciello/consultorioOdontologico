@@ -37,11 +37,20 @@ public class eliminarTurnoServlet extends HttpServlet {
     int id = Integer.parseInt(request.getParameter("id"));
     logica.ControladoraLogica cLogica = new logica.ControladoraLogica();
     try {
+        Entidades.Turno t = cLogica.buscarTurno(id);
+        String pacienteNombre = t.getPaciente() != null
+                ? t.getPaciente().getApellido() + ", " + t.getPaciente().getNombre()
+                : "Desconocido";
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm");
+        String fecha = t.getFechaHora() != null ? sdf.format(t.getFechaHora()) : "";
         cLogica.eliminarTurno(id);
+        request.getSession().setAttribute("flash",
+                "Turno de <strong>" + pacienteNombre + "</strong> del " + fecha + " eliminado correctamente.");
     } catch (Exception ex) {
         Logger.getLogger(eliminarTurnoServlet.class.getName()).log(Level.SEVERE, null, ex);
+        request.getSession().setAttribute("flashError", "Ocurrió un error al eliminar el turno.");
     }
-    response.sendRedirect("listaTurnosServlet");
+    response.sendRedirect("inicioServlet");
     }
 
     @Override

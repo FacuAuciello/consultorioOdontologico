@@ -60,24 +60,44 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
+
+    logica.ControladoraLogica cLogica = new logica.ControladoraLogica();
+
+    String fechaHoraStr = request.getParameter("fechaHora");
+    String idPacienteParam = request.getParameter("idPaciente");
+
+    // Validación
+    if (fechaHoraStr == null || fechaHoraStr.trim().isEmpty()) {
+        request.setAttribute("error", "La fecha y hora del turno son obligatorias. Seleccioná un horario desde la agenda.");
+        request.setAttribute("pacientes", cLogica.traerPacientes());
+        request.getRequestDispatcher("altaTurno.jsp").forward(request, response);
+        return;
+    }
+    if (idPacienteParam == null || idPacienteParam.trim().isEmpty()) {
+        request.setAttribute("error", "Debe seleccionar un paciente para el turno.");
+        request.setAttribute("pacientes", cLogica.traerPacientes());
+        request.setAttribute("fechaHora", fechaHoraStr);
+        request.getRequestDispatcher("altaTurno.jsp").forward(request, response);
+        return;
+    }
+
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
     Date fechaHora = null;
     try {
-        fechaHora = sdf.parse(request.getParameter("fechaHora"));
+        fechaHora = sdf.parse(fechaHoraStr);
     } catch (ParseException ex) {
         Logger.getLogger(altaTurnoServlet.class.getName()).log(Level.SEVERE, null, ex);
+        request.setAttribute("error", "El formato de fecha y hora no es válido.");
+        request.setAttribute("pacientes", cLogica.traerPacientes());
+        request.setAttribute("fechaHora", fechaHoraStr);
+        request.getRequestDispatcher("altaTurno.jsp").forward(request, response);
+        return;
     }
     String duracion = request.getParameter("duracionTurno");
     String monto = request.getParameter("monto");
     String notas = request.getParameter("notasOdontologicas");
-    String idPacienteParam = request.getParameter("idPaciente");
-    if (idPacienteParam == null || idPacienteParam.isEmpty()) {
-        response.sendRedirect("altaTurnoServlet");
-        return;
-    }
     int idPaciente = Integer.parseInt(idPacienteParam);
 
-    logica.ControladoraLogica cLogica = new logica.ControladoraLogica();
     Paciente paciente = cLogica.buscarPaciente(idPaciente);
 
     Turno turno = new Turno(fechaHora, duracion, monto, notas, paciente);
@@ -96,6 +116,10 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         }
     }
 
+    java.text.SimpleDateFormat sdfMensaje = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm");
+    request.getSession().setAttribute("flash",
+            "Turno de <strong>" + paciente.getApellido() + ", " + paciente.getNombre()
+            + "</strong> guardado para el " + sdfMensaje.format(fechaHora) + ".");
     response.sendRedirect("inicioServlet");
 }
 

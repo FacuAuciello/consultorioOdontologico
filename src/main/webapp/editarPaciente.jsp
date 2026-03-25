@@ -10,6 +10,14 @@
     <h1 class="h3 mb-0 text-gray-800">Editar Paciente</h1>
 </div>
 
+<% String errorEditar = (String) request.getAttribute("error"); %>
+<% if (errorEditar != null) { %>
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <i class="fas fa-exclamation-triangle"></i> <%= errorEditar %>
+    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+</div>
+<% } %>
+
 <div class="card shadow mb-4">
     <div class="card-body">
         <form action="editarPacienteServlet" method="POST">
@@ -17,19 +25,21 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Nombre</label>
-                        <input type="text" class="form-control" name="nombre" value="<%=p.getNombre()%>" required>
+                        <label>Nombre <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="nombre" value="<%=p.getNombre()%>"
+                               pattern="[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ ]+" title="Solo letras y espacios" required>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Apellido</label>
-                        <input type="text" class="form-control" name="apellido" value="<%=p.getApellido()%>" required>
+                        <label>Apellido <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="apellido" value="<%=p.getApellido()%>"
+                               pattern="[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ ]+" title="Solo letras y espacios" required>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>DNI</label>
+                        <label>DNI <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="dni" value="<%=p.getDni()%>" required>
                     </div>
                 </div>
@@ -37,23 +47,31 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Teléfono</label>
-                        <input type="text" class="form-control" name="numeroContacto" value="<%=p.getNumeroContacto()%>">
+                        <label>Teléfono <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="numeroContacto" value="<%=p.getNumeroContacto()%>" required>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Dirección</label>
-                        <input type="text" class="form-control" name="direccion" value="<%=p.getDireccion()%>">
+                        <label>Dirección <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="direccion" value="<%=p.getDireccion()%>" required>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Fecha de Nacimiento</label>
+                        <label>Fecha de Nacimiento <span class="text-danger">*</span></label>
                         <input type="hidden" name="fechaNacimiento" id="fechaNacimiento">
                         <%
                             String fnDia = "", fnMes = "", fnAnio = "";
-                            if (p.getFechaNacimiento() != null) {
+                            // Si hay un error de validación, preferir los valores enviados por el usuario
+                            String paramDia  = request.getParameter("fnDia");
+                            String paramMes  = request.getParameter("fnMes");
+                            String paramAnio = request.getParameter("fnAnio");
+                            if (paramDia != null && !paramDia.isEmpty()) {
+                                fnDia  = paramDia;
+                                fnMes  = paramMes  != null ? paramMes  : "";
+                                fnAnio = paramAnio != null ? paramAnio : "";
+                            } else if (p.getFechaNacimiento() != null) {
                                 java.util.Calendar cal = java.util.Calendar.getInstance();
                                 cal.setTime(p.getFechaNacimiento());
                                 fnDia  = String.valueOf(cal.get(java.util.Calendar.DAY_OF_MONTH));
@@ -62,9 +80,9 @@
                             }
                         %>
                         <div class="d-flex">
-                            <input type="number" id="fnDia" class="form-control text-center mr-1" placeholder="DD" min="1" max="31" style="width:70px" value="<%=fnDia%>">
-                            <input type="number" id="fnMes" class="form-control text-center mr-1" placeholder="MM" min="1" max="12" style="width:70px" value="<%=fnMes%>">
-                            <input type="number" id="fnAnio" class="form-control text-center" placeholder="AAAA" min="1900" max="2100" style="width:90px" value="<%=fnAnio%>">
+                            <input type="number" id="fnDia" name="fnDia" class="form-control text-center mr-1" placeholder="DD" min="1" max="31" style="width:70px" value="<%=fnDia%>">
+                            <input type="number" id="fnMes" name="fnMes" class="form-control text-center mr-1" placeholder="MM" min="1" max="12" style="width:70px" value="<%=fnMes%>">
+                            <input type="number" id="fnAnio" name="fnAnio" class="form-control text-center" placeholder="AAAA" min="1900" max="2100" style="width:90px" value="<%=fnAnio%>">
                         </div>
                     </div>
                 </div>

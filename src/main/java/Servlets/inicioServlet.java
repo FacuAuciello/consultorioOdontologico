@@ -50,6 +50,19 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
     }
     
     request.setAttribute("turnos", turnos);
+
+    // Leer y limpiar mensajes flash de sesión
+    String flash = (String) request.getSession().getAttribute("flash");
+    String flashError = (String) request.getSession().getAttribute("flashError");
+    if (flash != null) {
+        request.setAttribute("flash", flash);
+        request.getSession().removeAttribute("flash");
+    }
+    if (flashError != null) {
+        request.setAttribute("flashError", flashError);
+        request.getSession().removeAttribute("flashError");
+    }
+
     request.getRequestDispatcher("index.jsp").forward(request, response);
 }
 

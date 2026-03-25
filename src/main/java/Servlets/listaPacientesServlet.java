@@ -43,7 +43,19 @@ public class listaPacientesServlet extends HttpServlet {
         System.out.println("Cantidad de pacientes: " + listaPacientes.size());
 
         request.setAttribute("pacientes", listaPacientes);
-        //enviando jsp con requestDispatcher, el repartidor
+
+        // Leer y limpiar mensajes flash de sesión
+        String flash = (String) request.getSession().getAttribute("flash");
+        String flashError = (String) request.getSession().getAttribute("flashError");
+        if (flash != null) {
+            request.setAttribute("flash", flash);
+            request.getSession().removeAttribute("flash");
+        }
+        if (flashError != null) {
+            request.setAttribute("flashError", flashError);
+            request.getSession().removeAttribute("flashError");
+        }
+
         request.getRequestDispatcher("listaPacientes.jsp").forward(request, response);
         
     }

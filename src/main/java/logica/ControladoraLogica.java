@@ -39,7 +39,13 @@ public class ControladoraLogica {
     }
     
     public void eliminarPaciente(int id) throws Exception {
-    
+        // Eliminar turnos asociados antes de eliminar el paciente
+        List<Turno> turnos = controlPersis.getTurnoJPA().findTurnoEntities();
+        for (Turno t : turnos) {
+            if (t.getPaciente() != null && t.getPaciente().getId() == id) {
+                controlPersis.getTurnoJPA().destroy(t.getId());
+            }
+        }
         controlPersis.getPacienteJPA().destroy(id);
     }
     
